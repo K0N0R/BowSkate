@@ -1,4 +1,5 @@
 "use strict";
+document.body.requestPointerLock();
 const canvasElement = document.getElementById('mainGame');
 canvasElement.width = window.innerWidth;
 canvasElement.height = window.innerHeight;

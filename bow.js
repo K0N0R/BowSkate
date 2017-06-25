@@ -13,25 +13,29 @@ class Bow {
         this.arrows = [];
         this.lastMousePosX = 0;
         this.lastMousePosY = 0;
-        this.isAiming = false
-        this.aimingTime = 0;
+        this.isAiming = false;
+        this.totalAmingTime = 250;
+        this.currentAimingTime = 0;
         this.dupa = 0;
         this.wasReleased = true;
         this.previewArrow = new SimpleArrow(this.posX, this.posY);
+        
+        this.aimPoint = new AimPoint(this.posX, this.posY);
         this.pinEvents();
     }
 
     recalculateRotation() {
+        
         if (this.isAiming) {
             let vx = this.lastMousePosX - this.arrowStartPosX;
             let vy = this.lastMousePosY - this.arrowStartPosY;
             this.aimingRotation = Math.atan2(-vy, -vx);
+
         } else {
 
             let vx = this.lastMousePosX - this.posX;
             let vy = this.lastMousePosY - this.posY;
             this.targetRotation = Math.atan2(vy, vx);
-            //console.log(this.targetRotation);
         }
     }
 
@@ -46,8 +50,11 @@ class Bow {
             }
 
             let onMouseUp = (e) => {
-                this.isAiming = false;
-                this.aimingTime = 0;
+                this.currentAimingTime = this.totalAmingTime + 10;
+                setTimeout(()=>{
+                    this.isAiming = false;
+                })
+                
 
             }
 
@@ -62,18 +69,20 @@ class Bow {
     }
 
     render(ctx) {
+        this.aimPoint.render(ctx);
         this.logic();
         ctx.beginPath();
         ctx.save();
+        let maxChordDrawLength = 100;
         let chordDrawLength = 0;
         if (this.inputMethod === "keyboard") {
             if (this.isAiming) {
                 let chordVX = this.lastMousePosX - this.arrowStartPosX;
                 let chordVY = this.lastMousePosY - this.arrowStartPosY;
-                chordDrawLength = -Math.sqrt(chordVX * chordVX + chordVY * chordVY) / 20;
+                chordDrawLength = -Math.sqrt(chordVX * chordVX + chordVY * chordVY) < maxChordDrawLength ? -Math.sqrt(chordVX * chordVX + chordVY * chordVY) : maxChordDrawLength ;
             }
 
-        } else {
+        } else if(this.inputMethod === "pad") {
             if (this.isAiming)
                 chordDrawLength = -9.3;
         }
@@ -104,7 +113,7 @@ class Bow {
         // cieciwa
 
         ctx.lineWidth = 1;
-        ctx.strokeStyle = `#${this.aimingTime.toString(16).padStart(2, "0")}0000`;
+        ctx.strokeStyle = `#${this.currentAimingTime.toString(16).padStart(2, "0")}0000`;
         ctx.beginPath();
         ctx.moveTo(-this.size, 0);
 
@@ -147,12 +156,12 @@ class Bow {
         }
 
         if (this.isAiming) {
-            if (this.aimingTime < 245) {
-                this.aimingTime += 10;
+            if (this.currentAimingTime < this.totalAmingTime) {
+                this.currentAimingTime += 10;
             }
             else {
                 this.isAiming = false;
-                this.aimingTime = 0;
+                this.currentAimingTime = 0;
 
                 let vx = (this.lastMousePosX - this.arrowStartPosX) / canvasElement.width;
                 let vy = (this.lastMousePosY - this.arrowStartPosY) / canvasElement.height;
@@ -178,7 +187,7 @@ class Bow {
 
         } else {
 
-            this.aimingTime = 0;
+            this.currentAimingTime = 0;
         }
 
     }
@@ -189,7 +198,9 @@ class Bow {
         }
         if (y != null) {
             this.posY = y;
+            
         }
+        this.aimPoint.updateAnchorPos(this.posX, this.posY);
 
         this.recalculateRotation();
     }
