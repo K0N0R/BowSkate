@@ -45,7 +45,6 @@ class Bow {
 
             canvasElement.addEventListener("mousemove", onMouseMove)
             canvasElement.addEventListener("mouseup", onMouseUp);
-            let mouseDownTimeoutHandler;
             canvasElement.addEventListener("mousedown", (e) => {
                 this.isMouseDown = true;
             });
