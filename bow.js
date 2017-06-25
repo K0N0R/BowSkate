@@ -8,11 +8,14 @@ class Bow {
         this.arrowSpeed = 0.25;
         this.inputMethod = inputMethod;
         this.arrows = [];
-        this.lastMousePosX = 0;
-        this.lastMousePosY = 0;
+        this.isMouseDown = false;
         this.isAiming = false;
         this.totalAmingTime = 100;
-        this.currentAimingTime = 0;
+        this.mouseDownDebouneTime = 7;
+        this.currentAimingTime = -this.mouseDownDebouneTime;
+        this.chordDrawLength = 0;
+        this.maxChordDrawLength = 45;
+
         this.dupa = 0;
         this.pushArrow = false;
         this.wasReleased = true;
@@ -23,9 +26,9 @@ class Bow {
     }
 
     recalculateRotation() {
-            let vx =  this.aimPoint.posX - this.aimPoint.anchorPosX;
-            let vy =  this.aimPoint.posY - this.aimPoint.anchorPosY;
-            this.aimingRotation = Math.atan2(vy, vx);
+        let vx = this.aimPoint.posX - this.aimPoint.anchorPosX;
+        let vy = this.aimPoint.posY - this.aimPoint.anchorPosY;
+        this.aimingRotation = Math.atan2(vy, vx);
     }
 
     pinEvents() {
@@ -35,14 +38,16 @@ class Bow {
             }
 
             let onMouseUp = (e) => {
+                this.isMouseDown = false;
                 this.pushArrow = true;
 
             }
 
             canvasElement.addEventListener("mousemove", onMouseMove)
             canvasElement.addEventListener("mouseup", onMouseUp);
+            let mouseDownTimeoutHandler;
             canvasElement.addEventListener("mousedown", (e) => {
-                this.isAiming = true;
+                this.isMouseDown = true;
             });
         }
     }
@@ -52,34 +57,33 @@ class Bow {
         this.logic();
         ctx.beginPath();
         ctx.save();
-        let maxChordDrawLength = 45;
-        let chordDrawLength = 0;
         if (this.inputMethod === "keyboard") {
             if (this.isAiming) {
-                let chordVX = this.aimPoint.anchorPosX -this.aimPoint.posX;
-                let chordVY = this.aimPoint.anchorPosX -  this.aimPoint.posY;
+                this.chordDrawLength = 0;
+                let chordVX = this.aimPoint.anchorPosX - this.aimPoint.posX;
+                let chordVY = this.aimPoint.anchorPosX - this.aimPoint.posY;
                 let chordV = {
-                    x:chordVX/this.aimPoint.maxDistanceFromAnchor * this.currentAimingTime,
-                    y:chordVY/this.aimPoint.maxDistanceFromAnchor * this.currentAimingTime
+                    x: chordVX / this.aimPoint.maxDistanceFromAnchor * this.currentAimingTime,
+                    y: chordVY / this.aimPoint.maxDistanceFromAnchor * this.currentAimingTime
                 }
-                
-                chordDrawLength = Math.sqrt(chordV.x * chordV.x + chordV.y * chordV.y);
-                if(chordDrawLength<0){
-                    chordDrawLength = 0;
+
+                this.chordDrawLength = Math.sqrt(chordV.x * chordV.x + chordV.y * chordV.y);
+                if (this.chordDrawLength < 0) {
+                    this.chordDrawLength = 0;
                 }
-                if(chordDrawLength > maxChordDrawLength ){
-                    chordDrawLength = maxChordDrawLength;
+                if (this.chordDrawLength > this.maxChordDrawLength) {
+                    this.chordDrawLength = this.maxChordDrawLength;
                 }
-                chordDrawLength = -chordDrawLength;
+                this.chordDrawLength = -this.chordDrawLength;
             }
 
         } else if (this.inputMethod === "pad") {
             if (this.isAiming)
-                chordDrawLength = -9.3;
+                this.chordDrawLength = -9.3;
         }
 
 
-        if (this.isAiming && Math.abs(chordDrawLength) > 0 || this.inputMethod === "pad") {
+        if (this.isAiming && Math.abs(this.chordDrawLength) > 0 || this.inputMethod === "pad") {
             this.rotation += getAngleDiff(this.aimingRotation, this.rotation) / 10;
         } else {
             this.rotation += getAngleDiff(this.aimingRotation, this.rotation) / 10;
@@ -108,12 +112,12 @@ class Bow {
         ctx.beginPath();
         ctx.moveTo(-this.size, 0);
 
-        ctx.lineTo(0, chordDrawLength);
+        ctx.lineTo(0, this.chordDrawLength);
         ctx.lineTo(this.size, 0)
         ctx.stroke();
         if (this.isAiming) {
             ctx.rotate(Math.PI);
-            ctx.translate(0, -this.previewArrow.dlugoscPenisa - chordDrawLength);
+            ctx.translate(0, -this.previewArrow.dlugoscPenisa - this.chordDrawLength);
             this.previewArrow.render(ctx, true);
         }
         ctx.restore();
@@ -121,7 +125,21 @@ class Bow {
     }
 
     logic() {
-
+        if(!this.isAiming && this.isMouseDown){
+            if(this.currentAimingTime <= 0){
+                this.currentAimingTime++;
+            } else {
+                this.isAiming = true;
+            }
+            this.pushArrow = false;
+        }
+        if (this.isAiming && this.isMouseDown) {
+            if (this.currentAimingTime < this.totalAmingTime) {
+                this.currentAimingTime++;
+            } else{
+                this.currentAimingTime = this.totalAmingTime;
+            }
+        }
         if (this.inputMethod === 'pad') {
             let controller = navigator.getGamepads()[0];
             if (controller) {
@@ -151,15 +169,11 @@ class Bow {
                 this.currentAimingTime += 2;
             } else
                 this.currentAimingTime = this.totalAmingTime;
-        }  else {
-            this.currentAimingTime = 0;
         }
-        if (this.pushArrow && this.currentAimingTime) {
-            this.pushArrow = false;
-            this.isAiming = false;
-            console.log(this.aimPoint.posX, this.aimPoint.anchorPosX, this.aimPoint.maxDistanceFromAnchor, this.arrowSpeed*this.currentAimingTime);
-            let vx = (this.aimPoint.posX - this.aimPoint.anchorPosX)/this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed*this.currentAimingTime;
-            let vy = (this.aimPoint.posY - this.aimPoint.anchorPosY)/this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed*this.currentAimingTime;
+        if (this.isAiming && this.pushArrow && this.currentAimingTime && this.chordDrawLength) {
+            console.log(this.aimPoint.posX, this.aimPoint.anchorPosX, this.aimPoint.maxDistanceFromAnchor, this.arrowSpeed * this.currentAimingTime);
+            let vx = (this.aimPoint.posX - this.aimPoint.anchorPosX) / this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed * this.currentAimingTime;
+            let vy = (this.aimPoint.posY - this.aimPoint.anchorPosY) / this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed * this.currentAimingTime;
 
             if (this.inputMethod === "pad") {
                 let controller = navigator.getGamepads()[0];
@@ -169,16 +183,17 @@ class Bow {
                 }
             }
 
-
-
-            
             if (vx !== 0 || vy !== 0) {
                 if (this.arrows.length > 10) {
                     this.arrows.shift();
                 }
                 this.arrows.push(new Arrow(this.posX, this.posY, vx, vy));
             }
-        } 
+            this.currentAimingTime = -this.mouseDownDebouneTime;
+            this.pushArrow = false;
+            this.isAiming = false;
+            this.chordDrawLength = 0;
+        }
     }
     updatePosition({ x, y }) {
         if (x != null) {

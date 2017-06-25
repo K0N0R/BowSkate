@@ -1,6 +1,6 @@
 "use strict";
-document.body.requestPointerLock();
 const canvasElement = document.getElementById('mainGame');
+canvasElement.requestPointerLock();
 canvasElement.width = window.innerWidth;
 canvasElement.height = window.innerHeight;
 canvasElement.focus();
