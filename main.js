@@ -29,12 +29,12 @@ const leftPlayer = new Player(
     initPlayerLeftConfig.raidus,
     initPlayerLeftConfig.color,
     'keyboard');
-const rightPlayer = new Player(
-    initPlayerRightConfig.posX,
-    initPlayerRightConfig.posY,
-    initPlayerRightConfig.raidus,
-    initPlayerRightConfig.color,
-    'pad');
+// const rightPlayer = new Player(
+//     initPlayerRightConfig.posX,
+//     initPlayerRightConfig.posY,
+//     initPlayerRightConfig.raidus,
+//     initPlayerRightConfig.color,
+//     'pad');
 const camera = new Camera();
 function loadImg(src) {
     return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ function mainLoop() {
     gameField.render(ctx);
 
     leftPlayer.render(ctx);
-    rightPlayer.render(ctx);
+    //rightPlayer.render(ctx);
 
     camera.fuckMyLifeEnd(ctx);
 
