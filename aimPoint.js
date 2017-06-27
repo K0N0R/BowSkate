@@ -15,8 +15,8 @@ class AimPoint {
     };
     pinEvents() {
         window.addEventListener('mousemove', (e) => {
-            this.lastPosX = e.clientX;
-            this.lastPosY = e.clientY;
+            this.lastPosX = e.clientX - window.innerWidth/2;
+            this.lastPosY = e.clientY - window.innerHeight/2;
 
         });
     }
