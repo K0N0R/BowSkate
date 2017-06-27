@@ -14,7 +14,7 @@ class AimPoint {
         this.pinEvents();
     };
     pinEvents() {
-        canvasElement.addEventListener('mousemove', (e) => {
+        window.addEventListener('mousemove', (e) => {
             this.lastPosX = e.clientX;
             this.lastPosY = e.clientY;
 
@@ -46,19 +46,21 @@ class AimPoint {
     }
     updateAnchorPos(posX, posY){
         this.anchorPosX = posX;
-        this.anchorPosY = posY
+        this.anchorPosY = posY;
     }
 
     logic() {
-            let vx = this.anchorPosX - this.lastPosX;
-            let vy = this.anchorPosY - this.lastPosY;
+            let vx = this.lastPosX;
+            let vy = this.lastPosY;
             let currentDistanceFromAnchor = Math.sqrt(vx*vx + vy*vy);
-            this.rotation = Math.atan2(-vy, -vx);
+            this.rotation = Math.atan2(vy, vx);
             let pointerPos = {
-                x:-1* vx/currentDistanceFromAnchor * this.maxDistanceFromAnchor,
-                y:-1 * vy/currentDistanceFromAnchor * this.maxDistanceFromAnchor
+                x:vx,
+                y:vy
             }
-
+            console.log('mousepos', this.lastPosX, this.lastPosY)
+            console.log('aimpoint', this.posX, this.posY)
+            console.log('anchor', this.anchorPosX, this.anchorPosY)
             
             this.posX = this.anchorPosX + pointerPos.x;
             this.posY = this.anchorPosY + pointerPos.y;

@@ -2,8 +2,8 @@
 const canvasElement = document.getElementById('mainGame');
 canvasElement.requestPointerLock();
 
-canvasElement.width = window.innerWidth;
-canvasElement.height = window.innerHeight;
+canvasElement.width = window.innerWidth*2;
+canvasElement.height = window.innerHeight*2;
 canvasElement.focus();
 const ctx = canvasElement.getContext("2d");
 

@@ -170,7 +170,7 @@ class Bow {
                 this.currentAimingTime = this.totalAmingTime;
         }
         if (this.isAiming && this.pushArrow && this.currentAimingTime && this.chordDrawLength) {
-            console.log(this.aimPoint.posX, this.aimPoint.anchorPosX, this.aimPoint.maxDistanceFromAnchor, this.arrowSpeed * this.currentAimingTime);
+            
             let vx = (this.aimPoint.posX - this.aimPoint.anchorPosX) / this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed * this.currentAimingTime;
             let vy = (this.aimPoint.posY - this.aimPoint.anchorPosY) / this.aimPoint.maxDistanceFromAnchor * this.arrowSpeed * this.currentAimingTime;
 
@@ -202,7 +202,7 @@ class Bow {
             this.posY = y;
 
         }
-        this.aimPoint.updateAnchorPos(this.posX, this.posY);
+        this.aimPoint.updateAnchorPos(this.posX - this.size/2, this.posY - this.size/2);
 
         this.recalculateRotation();
     }

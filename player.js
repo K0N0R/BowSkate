@@ -96,6 +96,7 @@ class Player {
             this.moveVectorY += 0.2;
         }
 
+
         if (Math.abs(this.moveVectorX) > 0.06) {
             this.moveVectorX -= this.moveVectorX / 10;
         } else {
