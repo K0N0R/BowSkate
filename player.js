@@ -6,6 +6,7 @@ class Player {
     constructor(posX, posY, radius, color, inputMethod) {
         this.posX = posX;
         this.posY = posY;
+        this.originalRadius = radius;
         this.radius = radius;
         this.color = color;
         this.inputMethod = inputMethod;
@@ -17,11 +18,13 @@ class Player {
             s: 83,
             d: 68,
             a: 65,
-            f: 70
+            f: 70,
+            enter: 13
         });
 
         this.moveVectorX = 0;
         this.moveVectorY = 0;
+        this.radiusGrow = 0;
 
         this.pinEvents();
 
@@ -43,9 +46,16 @@ class Player {
                     this.keyCodes[key] = false;
                 }
             });
+            window.addEventListener('keyup', (e) => {
+                let key = e.keyCode;
+                if (key) {
+                    this.keyCodes[key] = false;
+                }
+            });
         } else if (this.inputMethod === 'pad') {
             this.controller = navigator.getGamepads()[0];
         }
+
     }
 
     logic() {
@@ -56,14 +66,20 @@ class Player {
     handleMove() {
         var controller = navigator.getGamepads()[0];
         if (this.inputMethod === 'keyboard') {
-            if (this.keyCodes[this.handledKeys.w] && this.posY === canvasElement.height - gameField.borderSize - this.radius) {
-                this.moveVectorY = -8;
+            if (this.keyCodes[this.handledKeys.w]) {
+                this.moveVectorY = -2;
             }
             if (this.keyCodes[this.handledKeys.a]) {
-                this.moveVectorX = -2;
+                this.moveVectorX = -4;
             }
             if (this.keyCodes[this.handledKeys.d]) {
-                this.moveVectorX = 2;
+                this.moveVectorX = 4;
+            }
+            if (this.keyCodes[this.handledKeys.s]) {
+                this.moveVectorY = 2;
+            }
+            if (this.keyCodes[this.handledKeys.enter] && this.radius === this.originalRadius) {
+                this.radiusGrow += 1.5;
             }
         } else if (controller && this.inputMethod === 'pad') {
             let leftX = controller.axes[GamepadInput.handledPadAxis.leftX];
@@ -80,27 +96,32 @@ class Player {
 
         }
 
+        this.radius += this.radiusGrow;
         this.posX += this.moveVectorX;
-        if (this.posX < gameField.borderSize + this.radius) {
-            this.posX = gameField.borderSize + this.radius;
-        }
-        if (this.posX > canvasElement.width - gameField.borderSize - this.radius) {
-            this.posX = canvasElement.width - gameField.borderSize - this.radius
-        }
         this.posY += this.moveVectorY;
-        if (this.posY > canvasElement.height - gameField.borderSize - this.radius) {
-            this.posY = canvasElement.height - gameField.borderSize - this.radius;
-            this.moveVectorY = 0;  
-        }
-        else {
-            this.moveVectorY += 0.2;
-        }
 
+        if(this.radiusGrow > 0.06  ) {
+            this.radiusGrow -= this.radiusGrow / 10;
+        } else if(this.radius > this.originalRadius && this.radiusGrow < 0.06 ) {
+            this.radiusGrow = -Math.abs(this.radiusGrow) * 1.2
+        } 
+
+        if(Math.abs(this.originalRadius - this.radius) < 1) {
+            this.radiusGrow = 0;
+            this.radius = this.originalRadius;
+        } 
+        
 
         if (Math.abs(this.moveVectorX) > 0.06) {
             this.moveVectorX -= this.moveVectorX / 10;
         } else {
             this.moveVectorX = 0;
+        }
+
+        if (Math.abs(this.moveVectorY) > 0.06) {
+            this.moveVectorY -= this.moveVectorY / 10;
+        } else {
+            this.moveVectorY = 0;
         }
 
         this.bow.updatePosition({ x: this.posX, y: this.posY });
@@ -116,5 +137,7 @@ class Player {
         ctx.closePath();
         this.bow.render(ctx);
     }
+
+    renderPlayerCharacter() {}
 
 }

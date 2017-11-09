@@ -28,9 +28,7 @@ class AimPoint {
         ctx.rotate(this.rotation);
         //grot
         ctx.beginPath()
-        ctx.lineTo(-10,5);
-        ctx.lineTo(10,10);
-        ctx.lineTo(10, 0)
+        ctx.arc(-10, 12.5, 5, 0, 2 * Math.PI, true);
         ctx.fill();
         ctx.restore();
 
