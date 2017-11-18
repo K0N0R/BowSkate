@@ -116,7 +116,7 @@ class Bow {
         ctx.stroke();
         if (this.isAiming) {
             ctx.rotate(Math.PI);
-            ctx.translate(0, -this.previewArrow.dlugoscPenisa - this.chordDrawLength);
+            ctx.translate(0, -this.previewArrow.length - this.chordDrawLength);
             this.previewArrow.render(ctx, true);
         }
         ctx.restore();
