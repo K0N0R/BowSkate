@@ -1,78 +1,87 @@
 class Rail {
-    constructor(x, y, railLength) {
-        this.scale = 1;
-        this.position = {
-            x: x,
-            y: y
-        }
-        this.railLength = railLength;
-        this.railStrokeWidth = 10 * this.scale;
-        this.railsBetween = 60 * this.scale;
+	public scale = 1;
+	public position = {x: 0, y: 0};
+	public railLength = 0;
+	public railStrokeWidth = 10 * this.scale;
+	public railsBetween = 60 * this.scale;
+	public connectorStroke = 20 * this.scale;
+	public connectorsBetween = 150 * this.scale;
 
-        this.connectorStroke = 20 * this.scale;
-        this.connectorsBetween = 150 * this.scale;
+	public upperRailPosition:IPosition;
+	public lowerRailPosition:IPosition;
+	public beginingPosition:IPosition;
+	public endingPosition:IPosition;
+	public connectorsCollection:any[];
+	public connectorsAmount =0;
 
-        this.upperRailPosition = {
-            x: this.position.x,
-            y: this.position.y,
-        }
-        this.lowerRailPosition = {
-            x: this.position.x,
-            y: this.position.y + this.railsBetween
-        }
+	constructor(x, y, railLength) {
+		this.position = {
+			x: x,
+			y: y
+		};
 
-        this.beginingPosition = {
-            x: this.position.x - this.railsBetween - this.railStrokeWidth,
-            y: this.position.y + this.railStrokeWidth / 2
-        }
-        this.endingPosition = {
-            x: this.position.x + this.railLength + this.railStrokeWidth,
-            y: this.position.y + this.railStrokeWidth / 2
-        }
+		this.upperRailPosition = {
+			x: this.position.x,
+			y: this.position.y,
+		};
+		this.lowerRailPosition = {
+			x: this.position.x,
+			y: this.position.y + this.railsBetween
+		};
 
-        this.connectorsCollection = this.calculateConnectorsCollection();
-    }
+		this.beginingPosition = {
+			x: this.position.x - this.railsBetween - this.railStrokeWidth,
+			y: this.position.y + this.railStrokeWidth / 2
+		};
+		this.endingPosition = {
+			x: this.position.x + this.railLength + this.railStrokeWidth,
+			y: this.position.y + this.railStrokeWidth / 2
+		};
 
-    render() {
-        ctx.beginPath();
-        this.renderUpperRail();
-        this.renderLowerRail();
-        this.renderConnectors();
-        this.renderBegining();
-        this.renderEnding();
-        ctx.closePath();
-    }
+		this.connectorsCollection = this.calculateConnectorsCollection();
+	}
 
-    renderUpperRail() {
-        ctx.fillRect(this.upperRailPosition.x, this.upperRailPosition.y, this.railLength, this.railStrokeWidth);
-    }
-    renderLowerRail() {
-        ctx.fillRect(this.lowerRailPosition.x, this.lowerRailPosition.y, this.railLength, this.railStrokeWidth);
-    }
+	render() {
+		ctx.beginPath();
+		this.renderUpperRail();
+		this.renderLowerRail();
+		this.renderConnectors();
+		this.renderBegining();
+		this.renderEnding();
+		ctx.closePath();
+	}
 
-    renderConnectors() {
-        this.connectorsCollection.forEach(c => {
-            ctx.fillRect(c.x, c.y, this.connectorStroke, this.railsBetween + (this.railStrokeWidth * 3));
-        });
-    }
+	renderUpperRail() {
+		ctx.fillRect(this.upperRailPosition.x, this.upperRailPosition.y, this.railLength, this.railStrokeWidth);
+	}
 
-    renderBegining() {
-        ctx.fillRect(this.beginingPosition.x, this.beginingPosition.y, this.railsBetween, this.railsBetween);
-    }
+	renderLowerRail() {
+		ctx.fillRect(this.lowerRailPosition.x, this.lowerRailPosition.y, this.railLength, this.railStrokeWidth);
+	}
 
-    renderEnding() {
-        ctx.fillRect(this.endingPosition.x, this.endingPosition.y, this.railsBetween, this.railsBetween);
-    }
+	renderConnectors() {
+		this.connectorsCollection.forEach(c => {
+			ctx.fillRect(c.x, c.y, this.connectorStroke, this.railsBetween + (this.railStrokeWidth * 3));
+		});
+	}
 
-    calculateConnectorsCollection() {
-        let connectors = [];
-        this.connectorsAmmount = Math.round(this.railLength / this.connectorsBetween);
-        for(let i = 0; i < this.connectorsAmmount; i++) {
-            connectors.push({
-                x: this.position.x + this.connectorsBetween * i,
-                y: this.position.y - this.railStrokeWidth //adjust from above
-            });
-        }
-        return connectors;
-    }
+	renderBegining() {
+		ctx.fillRect(this.beginingPosition.x, this.beginingPosition.y, this.railsBetween, this.railsBetween);
+	}
+
+	renderEnding() {
+		ctx.fillRect(this.endingPosition.x, this.endingPosition.y, this.railsBetween, this.railsBetween);
+	}
+
+	calculateConnectorsCollection() {
+		let connectors = [];
+		this.connectorsAmount = Math.round(this.railLength / this.connectorsBetween);
+		for (let i = 0; i < this.connectorsAmount; i++) {
+			connectors.push({
+				x: this.position.x + this.connectorsBetween * i,
+				y: this.position.y - this.railStrokeWidth //adjust from above
+			});
+		}
+		return connectors;
+	}
 }

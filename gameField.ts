@@ -52,7 +52,6 @@ class GameField {
 		this.trolleys = [
 			new Trolley(100, 100, this.mainPlayer)
 		]
-
     }
 
     render(ctx) {
