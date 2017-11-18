@@ -25,9 +25,7 @@ class GameField {
             new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
         ];
 
-        this.trolleys = [
-            new Trolley(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y)
-        ]
+
 
 
         this.camera = new Camera(this.initMainPlayerConfig.posX, this.initMainPlayerConfig.posY);
@@ -44,6 +42,9 @@ class GameField {
             this.initMainPlayerConfig.color,
             this.initMainPlayerConfig.inputMethod);
 
+        this.trolleys = [
+            new Trolley(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y, this.mainPlayer)
+        ]
     }
 
     render(ctx) {

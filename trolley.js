@@ -5,6 +5,7 @@ class Trolley {
         x: x,
         y: y,
     }
+    this.player = player;
     this.vx = 0.2;
     this.size = {
         width: 100,
@@ -49,9 +50,38 @@ class Trolley {
     }
     
     render() {
-
+        this.logic();
         this.renderFloor();
         this.renderBorders();
-        
+    }
+
+    logic() {
+        this.handleMovment();
+        this.handleCollisions();
+    }
+
+    handleMovment() {
+        this.position.x += this.vx;
+    }
+
+    handleCollisions() {
+        let playerSize = this.player.radius;
+        // RIGHT COLLISION
+        if (this.player.posX + playerSize > this.position.x + this.size.width) {
+            this.player.posX = this.position.x + this.size.width - playerSize;
+        }
+        // LEFT COLLISION
+        if (this.player.posX < this.position.x) {
+            this.player.posX = this.position.x;
+        }
+        // UPPER COLLISION
+        if (this.player.posY < this.position.y) {
+            this.player.posY = this.position.y;
+        }
+        // LOWER COLLISION
+        if (this.player.posY + playerSize > this.position.y + this.size.height) {
+            this.player.posY = this.position.y + this.size.height - playerSize;
+        }
+
     }
 }
