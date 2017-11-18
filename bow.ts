@@ -1,27 +1,37 @@
 class Bow {
+
+	public posX = 0;
+	public posY = 0;
+	public size = 0;
+	public rotation = 0;
+	public aimingRotation = 0;
+	public arrowSpeed = 0.25;
+	public inputMethod = "";
+	public arrows = [];
+	public isMouseDown = false;
+	public isAiming = false;
+	public totalAmingTime = 100;
+	public mouseDownDebouneTime = 7;
+	public currentAimingTime = 0;
+	public chordDrawLength = 0;
+	public maxChordDrawLength = 45;
+
+	public pushArrow = false;
+	public wasReleased = false;
+	public previewArrow: SimpleArrow;
+	public moveVX = 0;
+	public moveVY = 0;
+
+	public aimPoint: AimPoint;
+
+
 	constructor(posX, posY, size, inputMethod) {
 		this.posX = posX;
 		this.posY = posY;
 		this.size = size;
-		this.rotation = 0;
-		this.aimingRotation = 0;
-		this.arrowSpeed = 0.25;
 		this.inputMethod = inputMethod;
-		this.arrows = [];
-		this.isMouseDown = false;
-		this.isAiming = false;
-		this.totalAmingTime = 100;
-		this.mouseDownDebouneTime = 7;
 		this.currentAimingTime = -this.mouseDownDebouneTime;
-		this.chordDrawLength = 0;
-		this.maxChordDrawLength = 45;
-
-		this.pushArrow = false;
-		this.wasReleased = true;
 		this.previewArrow = new SimpleArrow(this.posX, this.posY);
-		this.moveVX = 0;
-		this.moveVY = 0;
-
 		this.aimPoint = new AimPoint(this.posX, this.posY);
 		this.pinEvents();
 	}
@@ -110,7 +120,7 @@ class Bow {
 		// cieciwa
 
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = `#${this.currentAimingTime.toString(16).padStart(2, "0")}0000`;
+		ctx.strokeStyle = `#${(this.currentAimingTime.toString(16) as any).padStart(2, "0")}0000`;
 		ctx.beginPath();
 		ctx.moveTo(-this.size, 0);
 

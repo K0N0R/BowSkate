@@ -1,5 +1,17 @@
 
 class AimPoint {
+
+    public anchorPosX = 0;
+    public anchorPosY = 0;
+    public posX = 0;
+    public posY = 0;
+    public maxDistanceFromAnchor = 300;
+    public size = 20;
+    public rotation = 0;
+    public angle = 0;
+    public lastPosX = 0;
+    public lastPosY = 0;
+
     constructor(anchorPosX, anchorPosY) {
         this.anchorPosX = anchorPosX;
         this.anchorPosY = anchorPosY;

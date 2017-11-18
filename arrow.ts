@@ -1,6 +1,8 @@
 "use strict";
 
 class Arrow extends SimpleArrow {
+	public vx = 0;
+	public vy = 0;
 	constructor(x, y, vx, vy) {
 		super(x, y);
 		this.vx = vx;

@@ -1,9 +1,14 @@
 class SimpleArrow {
+
+    public x = 0;
+    public y = 0;
+    public rotation = 0;
+    public length = 30;
+
+
    constructor(x,y) {
          this.x = x;
          this.y = y;
-         this.rotation = 0;
-         this.length = 30;
    }
 
    render(ctx, dontTransform = false) {
