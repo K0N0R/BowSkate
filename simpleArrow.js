@@ -3,7 +3,7 @@ class SimpleArrow {
          this.x = x;
          this.y = y;
          this.rotation = 0;
-         this.dlugoscPenisa = 30;
+         this.length = 30;
    }
 
    render(ctx, dontTransform = false) {
@@ -18,7 +18,7 @@ class SimpleArrow {
         ctx.fillStyle = 'black'
         ctx.beginPath();
     
-        ctx.moveTo(0, this.dlugoscPenisa);
+        ctx.moveTo(0, this.length);
         ctx.lineTo(0, 0)
         ctx.stroke();
         //grot
@@ -29,15 +29,15 @@ class SimpleArrow {
         ctx.fill();
         ctx.beginPath()
         //lotka prawa
-        ctx.moveTo(0, this.dlugoscPenisa);
-        ctx.lineTo(2, this.dlugoscPenisa + 2);
-        ctx.lineTo(2, this.dlugoscPenisa - 5);
-        ctx.lineTo(0, this.dlugoscPenisa - 7);
+        ctx.moveTo(0, this.length);
+        ctx.lineTo(2, this.length + 2);
+        ctx.lineTo(2, this.length - 5);
+        ctx.lineTo(0, this.length - 7);
         //lotka lewa
-        ctx.moveTo(0, this.dlugoscPenisa);
-        ctx.lineTo(-2, this.dlugoscPenisa + 2);
-        ctx.lineTo(-2, this.dlugoscPenisa - 5);
-        ctx.lineTo(0, this.dlugoscPenisa - 7);
+        ctx.moveTo(0, this.length);
+        ctx.lineTo(-2, this.length + 2);
+        ctx.lineTo(-2, this.length - 5);
+        ctx.lineTo(0, this.length - 7);
         ctx.stroke();
         ctx.restore();
    }

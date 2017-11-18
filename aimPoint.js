@@ -50,15 +50,12 @@ class AimPoint {
     logic() {
             let vx = this.lastPosX;
             let vy = this.lastPosY;
-            let currentDistanceFromAnchor = Math.sqrt(vx*vx + vy*vy);
             this.rotation = Math.atan2(vy, vx);
             let pointerPos = {
                 x:vx,
                 y:vy
-            }
-            console.log('mousepos', this.lastPosX, this.lastPosY)
-            console.log('aimpoint', this.posX, this.posY)
-            console.log('anchor', this.anchorPosX, this.anchorPosY)
+            };
+
             
             this.posX = this.anchorPosX + pointerPos.x;
             this.posY = this.anchorPosY + pointerPos.y;
