@@ -1,19 +1,22 @@
 class Trolley {
-    constructor(x, y, player) {
-        this.position = {
-            x: x,
-            y: y,
-        };
-        this.player = player;
-        this.vx = 0.2;
-        this.size = {
-            width: 100,
-            height: 50
-        };
-        this.strokeWidth = 5;
-        this.floorColor = '#676767';
-        this.borderColor = '#000088';
+    constructor (x, y, player) {
+
+    this.position = {
+        x: x,
+        y: y,
     }
+    this.player = player;
+    this.vx = 0.2;
+    this.size = {
+        width: 100,
+        height: 50
+    };
+    this.strokeWidth = 5;
+    this.floorColor = '#676767';
+    this.borderColor = '#000088';
+}
+
+
     renderFloor() {
         ctx.beginPath();
         ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
@@ -21,6 +24,7 @@ class Trolley {
         ctx.fill();
         ctx.closePath();
     }
+
     renderBorders() {
         ctx.beginPath();
         this.renderUpperBorder();
@@ -31,6 +35,7 @@ class Trolley {
         ctx.fill();
         ctx.closePath();
     }
+
     renderUpperBorder() {
         ctx.fillRect(this.position.x, this.position.y, this.size.width, this.strokeWidth);
     }
@@ -43,22 +48,20 @@ class Trolley {
     renderRightBorder() {
         ctx.fillRect(this.position.x + this.size.width - this.strokeWidth, this.position.y, this.strokeWidth, this.size.height);
     }
+    
     render() {
         this.logic();
         this.renderFloor();
         this.renderBorders();
     }
+
     logic() {
         this.handleMovment();
-        this.handlePlayerMovment();
         this.handleCollisions();
     }
+
     handleMovment() {
         this.position.x += this.vx;
-    }
-
-    handlePlayerMovment() {
-        this.player.posX += this.vx;
     }
 
     handleCollisions() {
@@ -79,6 +82,6 @@ class Trolley {
         if (this.player.posY + playerSize > this.position.y + this.size.height) {
             this.player.posY = this.position.y + this.size.height - playerSize;
         }
+
     }
 }
-//# sourceMappingURL=trolley.js.map
