@@ -34,14 +34,14 @@ class Trolley {
 
         this.border = {
             color: '#6d6d6d',
-            size: 5
+            size: 10
         };
 
         this.floor = {
             color: '#ADADAD',
             size: {
                 x: 100,
-                y: 50
+                y: 70
             }
         }
     }
@@ -97,21 +97,21 @@ class Trolley {
         let playerSize = this.player.radius;
         
         // UPPER COLLISION
-        if (this.player.posY - playerSize < this.position.y) {
-            this.player.posY = this.position.y + playerSize;
+        if (this.player.posY < this.upperBorderPosition.y + this.border.size + playerSize) {
+            this.player.posY = this.upperBorderPosition.y + this.border.size + playerSize;
         }
         // LOWER COLLISION
-        if (this.player.posY + playerSize > this.lowerBorderPosition.y) {
+        if (this.player.posY > this.lowerBorderPosition.y - playerSize) {
             this.player.posY = this.lowerBorderPosition.y - playerSize;
         }
 
         // RIGHT COLLISION
-        if (this.player.posX + playerSize > this.rightBorderPosition.x) {
+        if (this.player.posX > this.rightBorderPosition.x - playerSize) {
             this.player.posX = this.rightBorderPosition.x - playerSize;
         }
         // LEFT COLLISION
-        if (this.player.posX - playerSize < this.position.x) {
-            this.player.posX = this.position.x + playerSize;
+        if (this.player.posX < this.leftBorderPosition.x + this.border.size + playerSize) {
+            this.player.posX = this.leftBorderPosition.x + this.border.size + playerSize;
         }
     }
 

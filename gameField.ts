@@ -4,8 +4,8 @@ class GameField {
     public borderSize = 20;
     public initMainPlayerConfig = {
 		position: {
-			x: 200,
-			y: 300
+			x: 150,
+			y: 150
 		},
 		radius: 20,
 		color: 'yellow',
@@ -30,8 +30,8 @@ class GameField {
 	constructor() {
 
         this.rails = [
-            new Rail(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y, canvasElement.width),
-            new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
+            new Rail(100, 100, canvasElement.width),
+            //new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
         ];
 
 
@@ -50,7 +50,7 @@ class GameField {
             this.initMainPlayerConfig.inputMethod);
 
 		this.trolleys = [
-			new Trolley(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y, this.mainPlayer)
+			new Trolley(100, 100, this.mainPlayer)
 		]
 
     }

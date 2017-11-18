@@ -1,6 +1,6 @@
 class Rail {
     constructor(x, y, railLength) {
-        this.scale = 0.5;
+        this.scale = 1;
         this.position = {
             x: x,
             y: y
