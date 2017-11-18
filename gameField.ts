@@ -1,32 +1,41 @@
 "use strict";
 
 class GameField {
-    constructor() {
-        this.borderSize = 20;
-        this.initMainPlayerConfig = {
-            position: {
-                x: 200,
-                y: 300
-            },
-            radius: 20,
-            color: 'yellow',
-            inputMethod: 'keyboard'
-        };
-        this.init2PlayerConfig = {
-            posX: 600,
-            posY: 600,
-            radius: 50,
-            color: 'blue',
-            inputMethod: 'pad'
-        };
+    public borderSize = 20;
+    public initMainPlayerConfig = {
+		position: {
+			x: 200,
+			y: 300
+		},
+		radius: 20,
+		color: 'yellow',
+		inputMethod: 'keyboard'
+    };
+
+	public init2PlayerConfig = {
+		posX: 600,
+		posY: 600,
+		radius: 50,
+		color: 'blue',
+		inputMethod: 'pad'
+	};
+
+	public rails:Rail[];
+	public camera: Camera;
+	public mainPlayer:Player;
+	public trolleys:Trolley[];
+
+
+
+	constructor() {
 
         this.rails = [
             new Rail(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y, canvasElement.width),
             new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
-        ]
+        ];
 
 
-        this.camera = new Camera(this.initMainPlayerConfig.posX, this.initMainPlayerConfig.posY);
+        this.camera = new Camera(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y);
         // this.2Player = new Player(
         //     init2PlayerConfig.posX,
         //     init2PlayerConfig.posY,
