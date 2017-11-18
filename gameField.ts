@@ -28,7 +28,7 @@ class GameField {
 
 
 	constructor() {
-
+        console.log('Chriss to sucz');
         this.rails = [
             new Rail(100, 100, canvasElement.width),
             //new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
