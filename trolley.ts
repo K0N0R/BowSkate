@@ -1,92 +1,164 @@
-class Trolley {
-    constructor (x, y, player) {
 
-    this.position = {
-        x: x,
-        y: y,
-    }
-    this.player = player;
-    this.vx = 0.2;
-    this.size = {
-        width: 100,
-        height: 50
-    };
-    this.strokeWidth = 5;
-    this.floorColor = '#676767';
-    this.borderColor = '#000088';
+interface Dimension {
+    x: number;
+    y: number;
 }
 
+class Trolley {
+    public position: Dimension;
+    private player: Player;
+    private v: Dimension;
+    private size: Dimension;
+    private border: {
+        color: string;
+        size: number;
+    };
+    private upperBorderPosition: Dimension;
+    private lowerBorderPosition: Dimension;
+    private leftBorderPosition: Dimension;
+    private rightBorderPosition: Dimension;
+    private floor: {
+        color: string;
+        size: Dimension
+    }
+    constructor (x: number, y: number, player?: Player,) {
+        this.player = player;
+        this.position = {
+            x: x,
+            y: y,
+        }
+        this.v = {
+            x: 0.8,
+            y: 0
+        };
 
-    renderFloor() {
-        ctx.beginPath();
-        ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height);
-        ctx.fillStyle = this.floorColor;
-        ctx.fill();
-        ctx.closePath();
+        this.border = {
+            color: '#6d6d6d',
+            size: 5
+        };
+
+        this.floor = {
+            color: '#ADADAD',
+            size: {
+                x: 100,
+                y: 50
+            }
+        }
     }
 
-    renderBorders() {
-        ctx.beginPath();
-        this.renderUpperBorder();
-        this.renderLowerBorder();
-        this.renderLeftBorder();
-        this.renderRightBorder();
-        ctx.fillStyle = this.borderColor;
-        ctx.fill();
-        ctx.closePath();
+    // LOGIC
+    logic() {
+        this.trolleyLogic();
+        if (this.player) {
+            this.playerLogic();
+        }
     }
 
-    renderUpperBorder() {
-        ctx.fillRect(this.position.x, this.position.y, this.size.width, this.strokeWidth);
+    // TROLLEY LOGIC
+    trolleyLogic() {
+        this.trolleyPositionLogic();
+        this.trolleyBorderPositionLogic();
+
     }
-    renderLowerBorder() {
-        ctx.fillRect(this.position.x, this.position.y + this.size.height, this.size.width, this.strokeWidth);
+    trolleyPositionLogic() {
+        this.position.x += this.v.x;
+        this.position.y += this.v.y;
     }
-    renderLeftBorder() {
-        ctx.fillRect(this.position.x, this.position.y, this.strokeWidth, this.size.height);
+    trolleyBorderPositionLogic() {
+        this.upperBorderPosition = {
+            x: this.position.x,
+            y: this.position.y
+        }
+        this.lowerBorderPosition = {
+            x: this.position.x,
+            y: this.position.y + this.floor.size.y - this.border.size
+        }
+        this.leftBorderPosition = {
+            x: this.position.x,
+            y: this.position.y
+        }
+        this.rightBorderPosition = {
+            x: this.position.x + this.floor.size.x - this.border.size,
+            y: this.position.y
+        }
     }
-    renderRightBorder() {
-        ctx.fillRect(this.position.x + this.size.width - this.strokeWidth, this.position.y, this.strokeWidth, this.size.height);
+
+    // PLAYER LOGIC
+    playerLogic() {
+        this.playerPositionLogic();
+        this.playerCollisionLogic();
     }
-    
+
+    playerPositionLogic() {
+        this.player.posX += this.v.x;
+    }
+
+    playerCollisionLogic() {
+        let playerSize = this.player.radius;
+        
+        // UPPER COLLISION
+        if (this.player.posY - playerSize < this.position.y) {
+            this.player.posY = this.position.y + playerSize;
+        }
+        // LOWER COLLISION
+        if (this.player.posY + playerSize > this.lowerBorderPosition.y) {
+            this.player.posY = this.lowerBorderPosition.y - playerSize;
+        }
+
+        // RIGHT COLLISION
+        if (this.player.posX + playerSize > this.rightBorderPosition.x) {
+            this.player.posX = this.rightBorderPosition.x - playerSize;
+        }
+        // LEFT COLLISION
+        if (this.player.posX - playerSize < this.position.x) {
+            this.player.posX = this.position.x + playerSize;
+        }
+    }
+
+    // RENDER
     render() {
         this.logic();
         this.renderFloor();
         this.renderBorders();
     }
 
-    logic() {
-        this.handleMovment();
-        this.handlePlayerMovment();
-        this.handleCollisions();
+    // RENDER FLOOR
+    renderFloor() {
+        ctx.beginPath();
+        ctx.fillStyle = this.floor.color;
+        ctx.fillRect(this.position.x, this.position.y, this.floor.size.x, this.floor.size.y);
+        ctx.closePath();
     }
 
-    handleMovment() {
-        this.position.x += this.vx;
+    // RENDER BORDER
+    renderBorders() {
+        ctx.beginPath();
+        ctx.fillStyle = this.border.color;
+        this.renderUpperBorder();
+        this.renderLowerBorder();
+        this.renderLeftBorder();
+        this.renderRightBorder();
+        ctx.closePath();
     }
-
-    handlePlayerMovment() {
-        this.player.posX += this.vx;
+    renderUpperBorder() {
+        ctx.fillRect(this.upperBorderPosition.x, this.upperBorderPosition.y, this.floor.size.x, this.border.size);
+        //   ____
+        //  
     }
+    renderLowerBorder() {
+        ctx.fillRect(this.lowerBorderPosition.x, this.lowerBorderPosition.y, this.floor.size.x, this.border.size);
+        //   ____
+        //   ____
+    }
+    renderLeftBorder() {
+        ctx.fillRect(this.leftBorderPosition.x, this.leftBorderPosition.y, this.border.size, this.floor.size.y); 
+        //  ____
+        // |____
 
-    handleCollisions() {
-        let playerSize = this.player.radius;
-        // RIGHT COLLISION
-        if (this.player.posX + playerSize > this.position.x + this.size.width) {
-            this.player.posX = this.position.x + this.size.width - playerSize;
-        }
-        // LEFT COLLISION
-        if (this.player.posX - playerSize < this.position.x) {
-            this.player.posX = this.position.x + playerSize;
-        }
-        // UPPER COLLISION
-        if (this.player.posY - playerSize < this.position.y) {
-            this.player.posY = this.position.y + playerSize;
-        }
-        // LOWER COLLISION
-        if (this.player.posY + playerSize > this.position.y + this.size.height) {
-            this.player.posY = this.position.y + this.size.height - playerSize;
-        }
-
+    }
+    renderRightBorder() {
+        ctx.fillRect(this.rightBorderPosition.x, this.rightBorderPosition.y, this.border.size, this.floor.size.y);
+        //  ____
+        // |____|
     }
 }
