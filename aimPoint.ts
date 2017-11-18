@@ -15,14 +15,6 @@ class AimPoint {
     constructor(anchorPosX, anchorPosY) {
         this.anchorPosX = anchorPosX;
         this.anchorPosY = anchorPosY;
-        this.posX = 0;
-        this.posY = 0;
-        this.maxDistanceFromAnchor = 300;
-        this.size = 20;
-        this.rotation = 0;
-        this.angle = 0.1;
-        this.lastPosX = 0;
-        this.lastPosY = 0;
         this.pinEvents();
     };
     pinEvents() {
