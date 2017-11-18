@@ -45,7 +45,7 @@ class Trolley {
         ctx.fillRect(this.position.x, this.position.y, this.strokeWidth, this.size.height);
     }
     renderRightBorder() {
-        ctx.fillRect(this.position.x + this.size.width, this.position.y, this.strokeWidth, this.size.height);
+        ctx.fillRect(this.position.x + this.size.width - this.strokeWidth, this.position.y, this.strokeWidth, this.size.height);
     }
     
     render() {
