@@ -181,7 +181,7 @@ class Bow {
                     vy = controller.axes[GamepadInput.handledPadAxis.rightY] / 5;
                 }
             }
-
+            
             if (vx !== 0 || vy !== 0) {
                 if (this.arrows.length > 10) {
                     this.arrows.shift();
