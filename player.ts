@@ -2,6 +2,29 @@
 
 class Player {
 
+    public posX = 0;
+    public posY = 0;
+    public originalRadius = 0;
+    public radius = 0;
+    public color = "";
+    public inputMethod = "";
+    public bow:Bow;
+
+    public keyCodes:boolean[];
+    public handledKeys = {
+		w: 87,
+		s: 83,
+		d: 68,
+		a: 65,
+		f: 70,
+		enter: 13
+	};
+
+    public moveVectorX = 0;
+    public moveVectorY = 0;
+    public radiusGrow = 0;
+    public controller;
+
     constructor(posX, posY, radius, color, inputMethod) {
         this.posX = posX;
         this.posY = posY;
@@ -12,22 +35,8 @@ class Player {
         this.bow = new Bow(this.posX, this.posY, this.radius, this.inputMethod);
 
         this.keyCodes = new Array(256);
-        this.handledKeys = Object.freeze({
-            w: 87,
-            s: 83,
-            d: 68,
-            a: 65,
-            f: 70,
-            enter: 13
-        });
-
-        this.moveVectorX = 0;
-        this.moveVectorY = 0;
-        this.radiusGrow = 0;
 
         this.pinEvents();
-
-
     }
 
     pinEvents() {
