@@ -1,4 +1,5 @@
 "use strict";
+console.log("TEST");
 const canvasElement = document.getElementById('mainGame') as HTMLCanvasElement;
 canvasElement.requestPointerLock();
 
