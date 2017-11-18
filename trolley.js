@@ -57,11 +57,16 @@ class Trolley {
 
     logic() {
         this.handleMovment();
+        this.handlePlayerMovment();
         this.handleCollisions();
     }
 
     handleMovment() {
         this.position.x += this.vx;
+    }
+
+    handlePlayerMovment() {
+        this.player.posX += this.vx;
     }
 
     handleCollisions() {
