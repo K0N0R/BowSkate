@@ -21,8 +21,7 @@ class Arrow extends SimpleArrow {
 		this.vy *= 0.99;
 		this.x += this.vx;
 		this.y += this.vy;
-   // }
-
+		// }
 	}
 }
 

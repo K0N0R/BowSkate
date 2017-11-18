@@ -13,9 +13,8 @@ class SimpleArrow {
             ctx.rotate(this.rotation);
         }
 
-        // console.log(this.dlugoscPenisa);
         ctx.strokeStyle = "black";
-        ctx.fillStyle = 'black'
+        ctx.fillStyle = 'black';
         ctx.beginPath();
     
         ctx.moveTo(0, this.length);
