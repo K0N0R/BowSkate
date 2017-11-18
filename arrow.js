@@ -14,12 +14,14 @@ class Arrow extends SimpleArrow {
 	}
 
 	logic() {
-		if (this.y < canvasElement.height - gameField.borderSize + 1) {
-			this.vy += .09;
-			this.vx -= .001 * this.vx;
-			this.x += this.vx;
-			this.y += this.vy;
-		}
+        // if (this.y < canvasElement.height - gameField.borderSize+ 1) {
+        //     //this.vy += .09;
+        //     //this.vx -= .001 * this.vx;
+		this.vx *= 0.99;
+		this.vy *= 0.99;
+		this.x += this.vx;
+		this.y += this.vy;
+   // }
 
 	}
 }
