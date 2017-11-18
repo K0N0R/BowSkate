@@ -71,12 +71,12 @@ class Trolley {
             this.player.posX = this.position.x + this.size.width - playerSize;
         }
         // LEFT COLLISION
-        if (this.player.posX < this.position.x) {
-            this.player.posX = this.position.x;
+        if (this.player.posX - playerSize < this.position.x) {
+            this.player.posX = this.position.x + playerSize;
         }
         // UPPER COLLISION
-        if (this.player.posY < this.position.y) {
-            this.player.posY = this.position.y;
+        if (this.player.posY - playerSize < this.position.y) {
+            this.player.posY = this.position.y + playerSize;
         }
         // LOWER COLLISION
         if (this.player.posY + playerSize > this.position.y + this.size.height) {
