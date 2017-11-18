@@ -23,6 +23,10 @@ class GameField {
         this.rails = [
             new Rail(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y, canvasElement.width),
             new Rail(this.initMainPlayerConfig.position.x, 360  , canvasElement.width)
+        ];
+
+        this.trolleys = [
+            new Trolley(this.initMainPlayerConfig.position.x, this.initMainPlayerConfig.position.y)
         ]
 
 
@@ -46,6 +50,7 @@ class GameField {
         
         this.camera.fuckMyLife(ctx);
         this.rails.forEach(r => { r.render();});
+        this.trolleys.forEach(r => { r.render();});
         // <map ---------------------------------
         // ctx.beginPath();
         // ctx.rect(0, 0, canvasElement.width, this.borderSize);

@@ -10,7 +10,7 @@ class Arrow extends SimpleArrow {
 	render(ctx) {
 		this.logic();
 		this.rotation = Math.atan2(this.vy, this.vx) + Math.PI / 2;
-		super.render(ctx);
+		super.render(ctx);wa
 	}
 
 	logic() {
