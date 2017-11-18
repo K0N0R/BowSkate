@@ -124,7 +124,7 @@ class Player {
             this.moveVectorY = 0;
         }
 
-        this.bow.updatePosition({ x: this.posX, y: this.posY });
+        this.bow.updatePosition({ x: this.posX, y: this.posY, moveVX:this.moveVectorX, moveVY:this.moveVectorY });
     }
 
 
